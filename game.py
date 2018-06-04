@@ -1,8 +1,21 @@
-import controller
 import pygame
 import random
 import os
 import time
+from time import sleep
+from gpiozero import Button
+
+left_button = Button(13)
+right_button = Button(21)
+middle_button = Button(26)
+
+def movement(left_button, right_button):
+    movement_inputs = [left_button.is_pressed, right_button.is_pressed]
+    return movement_inputs
+
+def button_fire(middle_button):
+    return middle_button.is_pressed
+
 width = 800
 height = 600
 FPS = 100
@@ -61,11 +74,11 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.speedx = 0
-        keystate = controller.movement()
+        keystate = movement(left_button, right_button)
         if keystate[0]:
             self.speedx = -10
             self.image = pygame.image.load('avatar1.png')
-        if keystate[pygame.K_RIGHT]:
+        if keystate[1]:
             self.speedx = 10
             self.image = pygame.image.load('right.png')
         self.rect.x += self.speedx
@@ -140,10 +153,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                player.fire()
+ 
+    if button_fire(middle_button):
+        player.fire()
         
 
             
