@@ -1,3 +1,4 @@
+import controller
 import pygame
 import random
 import os
@@ -60,8 +61,8 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.speedx = 0
-        keystate = pygame.key.get_pressed()
-        if keystate[pygame.K_LEFT]:
+        keystate = controller.movement()
+        if keystate[0]:
             self.speedx = -10
             self.image = pygame.image.load('avatar1.png')
         if keystate[pygame.K_RIGHT]:
